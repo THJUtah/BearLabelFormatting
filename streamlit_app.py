@@ -33,20 +33,19 @@ if uploaded_file:
             st.error("Please upload a single-page PDF.")
             st.stop()
 
-        page = src_pdf.load_page(0)
-
         # Create new PDF
         new_pdf = fitz.open()
         new_page = new_pdf.new_page(width=total_width_pt, height=total_height_pt)
 
         for i in range(3):
             x_offset = i * (label_width_pt + spacing_pt)
-            # insert_page is vector-preserving
+            # Insert the page with transformation matrix
+            mat = fitz.Matrix(0, 1).preRotate(90)  # 90-degree clockwise rotation
             new_page.show_pdf_page(
-                rect=fitz.Rect(x_offset, 0, x_offset + label_width_pt, label_height_pt),
-                src=src_pdf,
-                pno=0,
-                rotate=90  # rotate 90 degrees clockwise
+                fitz.Rect(x_offset, 0, x_offset + label_width_pt, label_height_pt),
+                src_pdf,
+                0,
+                mat
             )
 
         # Save to buffer
