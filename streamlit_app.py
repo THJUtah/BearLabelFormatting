@@ -39,13 +39,12 @@ if uploaded_file:
 
         for i in range(3):
             x_offset = i * (label_width_pt + spacing_pt)
-            # Rotate and place the page using a matrix
-            rotate_mat = fitz.Matrix(0, 1).rotate(90)
+            # Use rotation argument instead of transformation matrix
             new_page.show_pdf_page(
                 fitz.Rect(x_offset, 0, x_offset + label_width_pt, label_height_pt),
                 src_pdf,
                 0,
-                rotate_mat
+                rotate=90
             )
 
         # Save to buffer
